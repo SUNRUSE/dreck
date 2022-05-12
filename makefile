@@ -2,7 +2,9 @@ DRECK_PLUGIN_NAMES = $(notdir $(shell find ./submodules/plugins -mindepth 1 -max
 DRECK_BUNDLED_MARKERS = $(addprefix ./tmp/bundled-markers/, ${DRECK_PLUGIN_NAMES})
 
 all:
+ifneq ($(wildcard ./tmp/bundled-markers),)
 	rm $(filter-out ${DRECK_BUNDLED_MARKERS}, $(shell find ./tmp/bundled-markers -mindepth 1))
+endif
 	make --jobs --file ./submodules/dreck/makefile all-post-clean
 
 all-post-clean: ${DRECK_BUNDLED_MARKERS}
