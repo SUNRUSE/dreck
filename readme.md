@@ -1,4 +1,4 @@
-# dreck
+# Dreck [![Continuous Integration](https://github.com/sunruse/dreck/workflows/Continuous%20Integration/badge.svg)](https://github.com/sunruse/dreck/actions) [![License](https://img.shields.io/github/license/sunruse/dreck.svg)](https://github.com/sunruse/dreck/blob/master/license) [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
 > _noun_ **`INFORMAL`** rubbish; trash
 
