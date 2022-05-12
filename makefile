@@ -11,7 +11,5 @@ all-post-clean: ${DRECK_BUNDLED_MARKERS}
 
 ./tmp/bundled-markers/%:
 	mkdir -p $(dir $@)
-ifneq ($(wildcard ./submodules/plugins/$*/bundled),)
-		cp -r ./submodules/plugins/$*/bundled/. .
-endif
+	if [ $(wildcard ./submodules/plugins/$*/bundled) != "" ] ; then cp -r ./submodules/plugins/$*/bundled/. . ; fi
 	touch $@
