@@ -1,14 +1,14 @@
 #!/usr/bin/env bats
 
-@test "builds as expected" {
+@test "subsequent run" {
   repository=$(pwd)
   temporaryDirectory=$(mktemp -d)
   expected=$temporaryDirectory/expected
-  cp -r ./tests/expected/. $expected
+  cp -r ./tests/subsequent-run/expected/. $expected
   mkdir -p $expected/submodules/dreck
   cp -r . $expected/submodules/dreck
   actual=$temporaryDirectory/actual
-  cp -r ./tests/input/. $actual
+  cp -r ./tests/subsequent-run/input/. $actual
   mkdir -p $actual/submodules/dreck
   cp -r . $actual/submodules/dreck
   cd $actual
