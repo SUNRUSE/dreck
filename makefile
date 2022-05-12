@@ -1,4 +1,4 @@
-DRECK_PLUGIN_NAMES = $(shell find ./submodules/plugins -mindepth 1 -maxdepth 1 -printf "%P\n" -type d)
+DRECK_PLUGIN_NAMES = $(notdir $(shell find ./submodules/plugins -mindepth 1 -maxdepth 1 -type d))
 DRECK_BUNDLED_MARKERS = $(addprefix ./tmp/bundled-markers/, ${DRECK_PLUGIN_NAMES})
 
 all:

@@ -8,7 +8,7 @@ A really pretty awful plugin-based build framework.
 
 - Bash.
 - GNU `make`.
-- GNU `find`.
+- Unix-like `find`.
 - Unix-like `mkdir` supporting `-p`.
 - Unix-like `cp`.
 - Unix-like `rm` supporting `-rf`.
