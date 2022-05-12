@@ -15,6 +15,14 @@ A really pretty awful plugin-based build framework.
 
 Realistically, any common Linux distribution should include these, or have them in their standard repositories.  On Windows, the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/about) can be used.
 
+## Installation in a new project
+
+After creating a new Git repository for your project, install Dreck as a submodule by running the following in a Bash shell at the root:
+
+```bash
+git submodule add https://github.com/sunruse/dreck submodules/dreck
+```
+
 ## Running a build
 
 It is recommended to install a plugin to run the build.
