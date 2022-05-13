@@ -1,3 +1,5 @@
+.SECONDEXPANSION:
+
 DRECK_PLUGIN_NAMES = $(notdir $(shell find ./submodules/plugins -mindepth 1 -maxdepth 1 -type d))
 DRECK_LIBRARIES_WITH_EXTRACTED_BUNDLES = $(addprefix ./persistent/libraries-with-extracted-bundles/, ${DRECK_PLUGIN_NAMES})
 DRECK_CORE_BUNDLED_FILES = $(patsubst ./submodules/dreck/bundled/%, ./%, $(shell find ./submodules/dreck/bundled -type f))
@@ -46,6 +48,6 @@ $(DRECK_CORE_BUNDLED_FILES): %: | ./submodules/dreck/bundled/%
 	mkdir -p $(dir $@)
 	cp ./submodules/dreck/bundled/$@ ./$@
 
-./ephemeral/src/./%: ${DRECK_ABSOLUTE_SRC_PATHS}
+./ephemeral/src/./%: $$(filter $$(addsuffix /%, ${DRECK_SRC_DIRECTORIES}), ${DRECK_ABSOLUTE_SRC_PATHS})
 	mkdir -p $(dir $@)
-	cp $(filter $(addsuffix /$*, ${DRECK_SRC_DIRECTORIES}), ${DRECK_ABSOLUTE_SRC_PATHS}) $@
+	cp $< $@
