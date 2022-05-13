@@ -4,14 +4,15 @@ DRECK_CORE_BUNDLED_FILES = $(patsubst ./submodules/dreck/bundled/%, ./%, $(shell
 
 ifneq ($(wildcard ./src),)
 	DRECK_SRC_DIRECTORIES += ./src
+	DRECK_SRC_PATHS += $(patsubst ./src/%, ./%, $(shell find ./src -type f))
 endif
 
-ifneq ($(wildcard ./submodules/plugins),)
+ifneq ($(wildcard ./submodules/plugins/*/src),)
 	DRECK_SRC_DIRECTORIES += $(shell find ./submodules/plugins -mindepth 2 -maxdepth 2 -type d -name "src")
+	DRECK_SRC_PATHS += $(addprefix ./, $(foreach path, $(shell find $(shell find ./submodules/plugins -mindepth 2 -maxdepth 2 -type d -name "src") -type f), $(shell echo ${path} | cut -d'/' -f6-)))
 endif
 
 ifneq (${DRECK_SRC_DIRECTORIES},)
-	DRECK_SRC_PATHS = $(shell find ${DRECK_SRC_DIRECTORIES} -type f -printf "%P\n")
 	DRECK_ABSOLUTE_SRC_PATHS = $(shell find ${DRECK_SRC_DIRECTORIES} -type f)
 endif
 
@@ -45,6 +46,6 @@ $(DRECK_CORE_BUNDLED_FILES): %: | ./submodules/dreck/bundled/%
 	mkdir -p $(dir $@)
 	cp ./submodules/dreck/bundled/$@ ./$@
 
-./ephemeral/src/%: ${DRECK_ABSOLUTE_SRC_PATHS}
+./ephemeral/src/./%: ${DRECK_ABSOLUTE_SRC_PATHS}
 	mkdir -p $(dir $@)
 	cp $(filter $(addsuffix /$*, ${DRECK_SRC_DIRECTORIES}), ${DRECK_ABSOLUTE_SRC_PATHS}) $@
