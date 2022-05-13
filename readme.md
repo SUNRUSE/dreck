@@ -33,6 +33,8 @@ If none of these apply to your use case, run the following in a Bash shell from 
 make --file ./submodules/dreck/makefile
 ```
 
+The first build will generate some ["bundled" files](./bundled) such as Git configuration which almost all projects should include.  Subsequent builds will not modify these.
+
 ## Project structure
 
 ```
