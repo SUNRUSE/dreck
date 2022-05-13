@@ -12,6 +12,8 @@ A really pretty awful plugin-based build framework.
 - Unix-like `mkdir` supporting `-p`.
 - Unix-like `cp`.
 - Unix-like `rm` supporting `-rf`.
+- Unix-like `cut`.
+- Unix-like `echo`.
 
 Realistically, any common Linux distribution should include these, or have them in their standard repositories.  On Windows, the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/about) can be used.
 
