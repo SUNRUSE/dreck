@@ -14,7 +14,7 @@ all-post-clean: ${DRECK_LIBRARIES_WITH_EXTRACTED_BUNDLES}
 
 ./persistent/libraries-with-extracted-bundles/%:
 	mkdir -p $(dir $@)
-	if [ $(wildcard ./submodules/plugins/$*/bundled) != "" ] ; then cp -r ./submodules/plugins/$*/bundled/. . ; fi
+	if [ "$(wildcard ./submodules/plugins/$*/bundled)" != "" ] ; then cp -r ./submodules/plugins/$*/bundled/. . ; fi
 	touch $@
 
 $(DRECK_CORE_BUNDLED_FILES): %: | ./submodules/dreck/bundled/%
