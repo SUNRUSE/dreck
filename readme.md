@@ -38,19 +38,33 @@ The first build will generate some ["bundled" files](./bundled) such as Git conf
 ## Project structure
 
 ```
+|'- ephemeral
+|   '- src
+|      '- **
 |'- persistent
+|'- src
+|   '- **
  '- submodules
     |'- dreck
      '- plugins
         '- *
-           |'- makefile
-            '- bundled
+           |'- bundled
+           |   '- **
+            '- src
                '- **
 ```
+
+### `./ephemeral/src/**`
+
+This directory contains the result of merging `./src/**` and `./submodules/plugins/*/src/**` (e.g. either `./src/a/b.c` or `./submodules/plugins/example-plugin/src/a/b.c` would both be copied to `./ephemeral/src/a/b.c`).  All files within are listed in `DRECK_SRC_PATHS` relative to `./ephemeral/src`, space-separated (e.g. either `./src/a/b.c` or `./submodules/plugins/example-plugin/src/a/b.c` would be included in `DRECK_SRC_PATHS` as `./ephemeral/src/a/b.c`).
 
 ### `./persistent`
 
 This directory contains information which is used internally by Dreck.  It should be committed whenever it changes.
+
+### `./src/**`
+
+Everything in this directory is considered to be a source file of your project.  Each file will be copied to `./ephemeral/src` (e.g. `./src/a/b.c` will be copied to `./ephemeral/src/a/b.c`) and will be listed in `DRECK_SRC_PATHS` relative to `./src`, space separated (e.g. `./src/a/b.c` would be included in `DRECK_SRC_PATHS` as `./a/b.c`).
 
 ### `./submodules/dreck`
 
@@ -63,6 +77,10 @@ Each subdirectory should be a submodule representing a plugin which should be di
 ### `./submodules/plugins/*/bundled/**`
 
 Everything in this directory and its subdirectories will be copied to the root directory the first time a build is performed with this plugin is installed (e.g. `./submodules/plugins/example-plugin/bundled/a/b.c` would be copied to `./a/b.c`).  Note that if the file is then deleted, it will _not_ be recreated on the next build.  This is intended to be used for example files, IDE helper files, etc.
+
+### `./submodules/plugins/*/src/**`
+
+Everything in this directory is considered to be a source file contributed by a plugin.  Each file will be copied to `./ephemeral/src` (e.g. `./submodules/plugins/example-plugin/src/a/b.c` will be copied to `./ephemeral/src/a/b.c`) and will be listed in `DRECK_SRC_PATHS` relative to `./submodules/plugins/*/src`, space separated (e.g. `./submodules/plugins/example-plugin/src/a/b.c` would be included in `DRECK_SRC_PATHS` as `./a/b.c`).
 
 ## Test suite
 
