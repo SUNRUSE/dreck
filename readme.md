@@ -38,14 +38,19 @@ The first build will generate some ["bundled" files](./bundled) such as Git conf
 ## Project structure
 
 ```
-'- submodules
-   |'- dreck
-    '- plugins
-       '- *
-          |'- makefile
-           '- bundled
-              '- **
+|'- persistent
+ '- submodules
+    |'- dreck
+     '- plugins
+        '- *
+           |'- makefile
+            '- bundled
+               '- **
 ```
+
+### `./persistent`
+
+This directory contains information which is used internally by Dreck.  It should be committed whenever it changes.
 
 ### `./submodules/dreck`
 
