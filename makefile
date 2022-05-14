@@ -34,15 +34,18 @@ endif
 
 DRECK_FILES_TO_DELETE += $(filter-out ${DRECK_EXPECTED_ABSOLUTE_SRC_PATHS}, ${DRECK_ACTUAL_ABSOLUTE_SRC_PATHS})
 
-all: ${DRECK_CORE_BUNDLED_FILES} ${DRECK_EXPECTED_PLUGINS_WITH_EXTRACTED_BUNDLES} ${DRECK_ABSOLUTE_SRC_PATHS}
-
 ifneq ($(strip ${DRECK_FILES_TO_DELETE}),)
-	rm ${DRECK_FILES_TO_DELETE}
+	DRECK_DELETION_DUMMY = dreck-deletion-dummy
 endif
+
+all: ${DRECK_CORE_BUNDLED_FILES} ${DRECK_EXPECTED_PLUGINS_WITH_EXTRACTED_BUNDLES} ${DRECK_ABSOLUTE_SRC_PATHS} | ${DRECK_DELETION_DUMMY}
 
 	make --jobs --file ./submodules/dreck/makefile all-post-clean
 
 all-post-clean: ${DRECK_EXPECTED_ABSOLUTE_SRC_PATHS}
+
+dreck-deletion-dummy:
+	rm ${DRECK_FILES_TO_DELETE}
 
 ./persistent/plugins-with-extracted-bundles/%:
 	mkdir -p $(dir $@)
