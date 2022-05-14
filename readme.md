@@ -41,6 +41,8 @@ The first build will generate some ["bundled" files](./bundled) such as Git conf
 
 ```
 |'- ephemeral
+|   '- intermediate
+|      '- **
 |   '- src
 |      '- **
 |'- persistent
@@ -55,6 +57,10 @@ The first build will generate some ["bundled" files](./bundled) such as Git conf
             '- src
                '- **
 ```
+
+### `./ephemeral/intermediate/**`
+
+This directory is for files which were generated from source files (minified, compiled, etc.) but should not appear in the final product of the build.  Plugins which create files in this directory must append their names to `DRECK_INTERMEDIATE_PATHS` relative to `./ephemeral/intermediate`, space-separated (e.g. `./ephemeral/intermediate/a/b.c` would be included in `DRECK_INTERMEDIATE_PATHS` as `./ephemeral/intermediate/a/b.c`).
 
 ### `./ephemeral/src/**`
 
