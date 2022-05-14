@@ -1,0 +1,1 @@
+Changed plugin src file in subdirectory (src).
