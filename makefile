@@ -1,5 +1,7 @@
 .SECONDEXPANSION:
 
+all: all-clean
+
 DRECK_PLUGIN_NAMES = $(notdir $(shell find ./submodules/plugins -mindepth 1 -maxdepth 1 -type d))
 
 DRECK_EXPECTED_PLUGINS_WITH_EXTRACTED_BUNDLES = $(addprefix ./persistent/plugins-with-extracted-bundles/, ${DRECK_PLUGIN_NAMES})
@@ -48,7 +50,7 @@ ifneq ($(strip ${DRECK_FILES_TO_DELETE}),)
 	DRECK_DELETION_DUMMY = dreck-deletion-dummy
 endif
 
-all: ${DRECK_CORE_BUNDLED_FILES} ${DRECK_EXPECTED_PLUGINS_WITH_EXTRACTED_BUNDLES} ${DRECK_ABSOLUTE_SRC_PATHS} | ${DRECK_DELETION_DUMMY}
+all-clean: ${DRECK_CORE_BUNDLED_FILES} ${DRECK_EXPECTED_PLUGINS_WITH_EXTRACTED_BUNDLES} ${DRECK_ABSOLUTE_SRC_PATHS} | ${DRECK_DELETION_DUMMY}
 
 	make --jobs --file ./submodules/dreck/makefile all-post-clean
 
