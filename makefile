@@ -34,6 +34,16 @@ endif
 
 DRECK_FILES_TO_DELETE += $(filter-out ${DRECK_EXPECTED_ABSOLUTE_SRC_PATHS}, ${DRECK_ACTUAL_ABSOLUTE_SRC_PATHS})
 
+include $(shell find ./submodules/plugins -mindepth 2 -maxdepth 2 -type f -name "makefile")
+
+DRECK_EXPECTED_ABSOLUTE_INTERMEDIATE_PATHS = $(addprefix ./ephemeral/intermediate/, ${DRECK_INTERMEDIATE_PATHS})
+
+ifneq ($(strip $(wildcard ./ephemeral/intermediate)),)
+	DRECK_ACTUAL_ABSOLUTE_INTERMEDIATE_PATHS = $(shell find ./ephemeral/intermediate -type f)
+endif
+
+DRECK_FILES_TO_DELETE += $(filter-out ${DRECK_EXPECTED_ABSOLUTE_INTERMEDIATE_PATHS}, ${DRECK_ACTUAL_ABSOLUTE_INTERMEDIATE_PATHS})
+
 ifneq ($(strip ${DRECK_FILES_TO_DELETE}),)
 	DRECK_DELETION_DUMMY = dreck-deletion-dummy
 endif
@@ -42,7 +52,7 @@ all: ${DRECK_CORE_BUNDLED_FILES} ${DRECK_EXPECTED_PLUGINS_WITH_EXTRACTED_BUNDLES
 
 	make --jobs --file ./submodules/dreck/makefile all-post-clean
 
-all-post-clean: ${DRECK_EXPECTED_ABSOLUTE_SRC_PATHS}
+all-post-clean: ${DRECK_EXPECTED_ABSOLUTE_SRC_PATHS} ${DRECK_EXPECTED_ABSOLUTE_INTERMEDIATE_PATHS}
 
 dreck-deletion-dummy:
 	rm ${DRECK_FILES_TO_DELETE}
