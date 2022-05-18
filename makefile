@@ -28,7 +28,7 @@ ifneq ($(strip ${DRECK_SRC_DIRECTORIES}),)
 	DRECK_ABSOLUTE_SRC_PATHS = $(shell find ${DRECK_SRC_DIRECTORIES} -type f)
 endif
 
-DRECK_EXPECTED_ABSOLUTE_SRC_PATHS = $(addprefix ./ephemeral/src/, ${DRECK_SRC_PATHS})
+DRECK_EXPECTED_ABSOLUTE_SRC_PATHS = $(addprefix ./ephemeral/src/, $(patsubst ./%, %, ${DRECK_SRC_PATHS}))
 
 ifneq ($(strip $(wildcard ./ephemeral/src)),)
 	DRECK_ACTUAL_ABSOLUTE_SRC_PATHS = $(shell find ./ephemeral/src -type f)
@@ -38,7 +38,7 @@ DRECK_FILES_TO_DELETE += $(filter-out ${DRECK_EXPECTED_ABSOLUTE_SRC_PATHS}, ${DR
 
 include $(shell find ./submodules/plugins -mindepth 2 -maxdepth 2 -type f -name "makefile")
 
-DRECK_EXPECTED_ABSOLUTE_INTERMEDIATE_PATHS = $(addprefix ./ephemeral/intermediate/, ${DRECK_INTERMEDIATE_PATHS})
+DRECK_EXPECTED_ABSOLUTE_INTERMEDIATE_PATHS = $(addprefix ./ephemeral/intermediate/, $(patsubst ./%, %, ${DRECK_INTERMEDIATE_PATHS}))
 
 ifneq ($(strip $(wildcard ./ephemeral/intermediate)),)
 	DRECK_ACTUAL_ABSOLUTE_INTERMEDIATE_PATHS = $(shell find ./ephemeral/intermediate -type f)
@@ -68,6 +68,6 @@ $(DRECK_CORE_BUNDLED_FILES): %: | ./submodules/dreck/bundled/%
 	mkdir -p $(dir $@)
 	cp ./submodules/dreck/bundled/$@ ./$@
 
-./ephemeral/src/./%: $$(filter $$(addsuffix /%, ${DRECK_SRC_DIRECTORIES}), ${DRECK_ABSOLUTE_SRC_PATHS})
+./ephemeral/src/%: $$(filter $$(addsuffix /%, ${DRECK_SRC_DIRECTORIES}), ${DRECK_ABSOLUTE_SRC_PATHS})
 	mkdir -p $(dir $@)
 	cp $< $@
