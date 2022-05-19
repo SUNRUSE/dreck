@@ -36,7 +36,7 @@ endif
 
 DRECK_FILES_TO_DELETE += $(filter-out ${DRECK_EXPECTED_ABSOLUTE_SRC_PATHS}, ${DRECK_ACTUAL_ABSOLUTE_SRC_PATHS})
 
-include $(shell find ./submodules/plugins -mindepth 2 -maxdepth 2 -type f -name "makefile")
+include $(shell find ./submodules/plugins -mindepth 2 -maxdepth 2 -type f -name "variables.makefile")
 
 DRECK_EXPECTED_ABSOLUTE_INTERMEDIATE_PATHS = $(addprefix ./ephemeral/intermediate/, $(patsubst ./%, %, ${DRECK_INTERMEDIATE_PATHS}))
 
@@ -71,3 +71,5 @@ $(DRECK_CORE_BUNDLED_FILES): %: | ./submodules/dreck/bundled/%
 ./ephemeral/src/%: $$(filter $$(addsuffix /%, ${DRECK_SRC_DIRECTORIES}), ${DRECK_ABSOLUTE_SRC_PATHS})
 	mkdir -p $(dir $@)
 	cp $< $@
+
+include $(shell find ./submodules/plugins -mindepth 2 -maxdepth 2 -type f -name "rules.makefile")
