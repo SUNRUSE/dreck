@@ -41,6 +41,8 @@ The first build will generate some ["bundled" files](./bundled) such as Git conf
 
 ```
 |'- ephemeral
+|   '- dist
+|      '- **
 |   '- intermediate
 |      '- **
 |   '- src
@@ -59,6 +61,10 @@ The first build will generate some ["bundled" files](./bundled) such as Git conf
            |   '- **
             '- variables.makefile
 ```
+
+### `./ephemeral/dist/**`
+
+This directory contains the files which are considered the final products of the build.  Makefiles of plugins which directly create files in this directory must append their names to `DRECK_DIST_PATHS` relative to `./ephemeral/dist`, space-separated (e.g. `./ephemeral/dist/a/b.c` would be included in `DRECK_DIST_PATHS` as `./a/b.c`).
 
 ### `./ephemeral/intermediate/**`
 
@@ -145,6 +151,10 @@ A read-only space-separated list of all of the source files found, relative to `
 #### `DRECK_INTERMEDIATE_PATHS`
 
 A readable and appendable space-separated list of all of the intermediate files which will exist by the end of the build, relative to `./ephemeral/intermediate` (e.g. `./ephemeral/intermediate/a/b.c` will appear as `./a/b.c`).
+
+#### `DRECK_DIST_PATHS`
+
+An appendable space-separated list of all of the build artifact files which will exist by the end of the build, relative to `./ephemeral/dist` (e.g. `./ephemeral/dist/a/b.c` will appear as `./a/b.c`).
 
 #### Example
 

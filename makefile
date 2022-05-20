@@ -46,6 +46,14 @@ endif
 
 DRECK_FILES_TO_DELETE += $(filter-out ${DRECK_EXPECTED_ABSOLUTE_INTERMEDIATE_PATHS}, ${DRECK_ACTUAL_ABSOLUTE_INTERMEDIATE_PATHS})
 
+DRECK_EXPECTED_ABSOLUTE_DIST_PATHS = $(addprefix ./ephemeral/dist/, $(patsubst ./%, %, ${DRECK_DIST_PATHS}))
+
+ifneq ($(strip $(wildcard ./ephemeral/dist)),)
+	DRECK_ACTUAL_ABSOLUTE_DIST_PATHS = $(shell find ./ephemeral/dist -type f)
+endif
+
+DRECK_FILES_TO_DELETE += $(filter-out ${DRECK_EXPECTED_ABSOLUTE_DIST_PATHS}, ${DRECK_ACTUAL_ABSOLUTE_DIST_PATHS})
+
 ifneq ($(strip ${DRECK_FILES_TO_DELETE}),)
 	DRECK_DELETION_DUMMY = dreck-deletion-dummy
 endif
@@ -54,7 +62,7 @@ all-clean: ${DRECK_CORE_BUNDLED_FILES} ${DRECK_EXPECTED_PLUGINS_WITH_EXTRACTED_B
 
 	make --jobs --file ./submodules/dreck/makefile all-post-clean
 
-all-post-clean: ${DRECK_EXPECTED_ABSOLUTE_SRC_PATHS} ${DRECK_EXPECTED_ABSOLUTE_INTERMEDIATE_PATHS}
+all-post-clean: ${DRECK_EXPECTED_ABSOLUTE_SRC_PATHS} ${DRECK_EXPECTED_ABSOLUTE_INTERMEDIATE_PATHS} ${DRECK_EXPECTED_ABSOLUTE_DIST_PATHS}
 
 dreck-deletion-dummy:
 	rm ${DRECK_FILES_TO_DELETE}
