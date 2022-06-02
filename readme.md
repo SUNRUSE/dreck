@@ -119,7 +119,7 @@ DRECK_GENERATED_PATHS += $(patsubst ./plugins/example-plugin/generated/%.txt, ./
 Run the following in a Bash shell at the root of this repository to run the automated test suite:
 
 ```bash
-./submodules/bats-core/bin/bats ./tests/run.bash
+./bats-core/bin/bats ./tests/run.bash
 ```
 
 This is configured to run in continuous integration as a GitHub Action.

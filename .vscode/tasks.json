@@ -4,7 +4,7 @@
     {
       "label": "Run",
       "type": "shell",
-      "command": "./submodules/bats-core/bin/bats ./tests/run.bash",
+      "command": "./bats-core/bin/bats ./tests/run.bash",
       "group": {
         "kind": "build",
         "isDefault": true
