@@ -40,87 +40,81 @@ The first build will generate some ["bundled" files](./bundled) such as Git conf
 ## Project structure
 
 ```
-|'- ephemeral
-|   '- dist
-|      '- **
-|   '- intermediate
-|      '- **
-|   '- src
-|      '- **
 |'- persistent
-|'- src
-|   '- **
- '- submodules
-    |'- dreck
-     '- plugins
-        '- *
-           |'- bundled
-           |   '- **
-           |'- rules.makefile
-           |'- src
-           |   '- **
-            '- variables.makefile
+ '- plugins
+    '- dreck
+    '- *
+       |'- bundled
+       |   '- **
+       |'- generated
+       |   '- **
+       |'- rules.makefile
+       |'- src
+       |   '- **
+       '- variables.makefile
 ```
-
-### `./ephemeral/dist/**`
-
-This directory contains the files which are considered the final products of the build.  Makefiles of plugins which directly create files in this directory must append their names to `DRECK_DIST_PATHS` relative to `./ephemeral/dist`, space-separated (e.g. `./ephemeral/dist/a/b.c` would be included in `DRECK_DIST_PATHS` as `./a/b.c`).
-
-### `./ephemeral/intermediate/**`
-
-This directory is for files which were generated from source files (minified, compiled, etc.) but should not appear in the final product of the build.  Makefiles of plugins which create files in this directory must append their names to `DRECK_INTERMEDIATE_PATHS` relative to `./ephemeral/intermediate`, space-separated (e.g. `./ephemeral/intermediate/a/b.c` would be included in `DRECK_INTERMEDIATE_PATHS` as `./ephemeral/intermediate/a/b.c`).
-
-### `./ephemeral/src/**`
-
-This directory contains the result of merging `./src/**` and `./submodules/plugins/*/src/**` (e.g. either `./src/a/b.c` or `./submodules/plugins/example-plugin/src/a/b.c` would both be copied to `./ephemeral/src/a/b.c`).  All files within are listed in `DRECK_SRC_PATHS` relative to `./ephemeral/src`, space-separated (e.g. either `./src/a/b.c` or `./submodules/plugins/example-plugin/src/a/b.c` would be included in `DRECK_SRC_PATHS` as `./ephemeral/src/a/b.c`).
 
 ### `./persistent`
 
 This directory contains information which is used internally by Dreck.  It should be committed whenever it changes.
 
-### `./src/**`
-
-Everything in this directory is considered to be a source file of your project.  Each file will be copied to `./ephemeral/src` (e.g. `./src/a/b.c` will be copied to `./ephemeral/src/a/b.c`) and will be listed in `DRECK_SRC_PATHS` relative to `./src`, space separated (e.g. `./src/a/b.c` would be included in `DRECK_SRC_PATHS` as `./a/b.c`).
-
-### `./submodules/dreck`
+### `./plugins/dreck`
 
 A Git submodule of this repository.
 
-### `./submodules/plugins/*`
+### `./plugins/*`
 
-Each subdirectory should be a submodule representing a plugin which should be discovered by dreck.
+Each other subdirectory represents a plugin which should be discovered by Dreck.  Most of these should be Git submodules.
 
-### `./submodules/plugins/*/bundled/**`
+### `./plugins/*/bundled/**`
 
-Everything in this directory and its subdirectories will be copied to the root directory the first time a build is performed with this plugin is installed (e.g. `./submodules/plugins/example-plugin/bundled/a/b.c` would be copied to `./a/b.c`).  Note that if the file is then deleted, it will _not_ be recreated on the next build.  This is intended to be used for example files, IDE helper files, etc.
+Everything in these directories and their subdirectories will be copied to the root of the project the first time a build is performed with this plugin installed (e.g. `./plugins/example-plugin/bundled/a/b.c` would be copied to `./a/b.c`).  Note that if the file is then deleted or modified, it will _not_ be replaced on the next build.  This is intended to be used for configuration files, IDE helper files, CI scripts, etc.
 
-### `./submodules/plugins/*/rules.makefile`
+### `./plugins/*/rules.makefile`
 
-Use this makefile to add rules.
+Use these makefiles to add rules.
+
+The following variables are defined (most plugins will introduce their own as well):
+
+#### `DRECK_GENERATED_PATHS`
+
+An read-only space-separated list of all of the files which are to be generated during the build, relative to the root of the project, space separated (e.g. `./plugins/example-plugin/generated/a/b.c`).
+
+#### Example
+
+Given appropriate variable manipulation (see `./plugins/*/variables.makefile`), this would make a copy of each text file in the source files as an generated file, transformed into lower case:
+
+```makefile
+./plugins/example-plugin/generated/%-in-lower-case.txt: ./%.txt
+	mkdir -p $(dir $@)
+	cat $< | tr A-Z a-z > $@
+```
+
+### `./plugins/*/src/**`
+
+Everything in these directories is considered to be a source file.  Each file will be listed in `DRECK_SRC_PATHS`, relative to the root of the project, space separated (e.g. `./submodules/plugins/example-plugin/src/a/b.c` would be included in `DRECK_SRC_PATHS` as `./a/b.c`).
+
+### `./plugins/*/variables.makefile`
+
+Use these makefiles to add/amend variables.
 
 The following variables are defined:
 
 #### `DRECK_SRC_PATHS`
 
-A read-only space-separated list of all of the source files found, relative to `./ephemeral/src` (e.g. `./ephemeral/src/a/b.c` will appear as `./a/b.c`).
+A read-only space-separated list of all of the source files found, relative to the root of the project, space separated (e.g. `./plugins/example-plugin/src/a/b.c`).
 
-#### `DRECK_INTERMEDIATE_PATHS`
+#### `DRECK_GENERATED_PATHS`
 
-A read-only  space-separated list of all of the intermediate files which will exist by the end of the build, relative to `./ephemeral/intermediate` (e.g. `./ephemeral/intermediate/a/b.c` will appear as `./a/b.c`).
+An append-only space-separated list of all of the files which will be generated during the build, relative to the root of the project, space separated (e.g. `./plugins/example-plugin/generated/a/b.c`).
 
 #### Example
 
-Given appropriate variable manipulation (see `./submodules/plugins/*/variables.makefile`), this would make a copy of each text file in the source files as an intermediate file, transformed into lower case:
+This defines the variables which would make a copy of each text file in the source files as a generated file, transformed into lower case:
 
 ```makefile
-./ephemeral/intermediate/%-in-lower-case.txt: ./ephemeral/src/%.txt
-	mkdir -p $(dir $@)
-	cat $< | tr A-Z a-z > $@
+DRECK_GENERATED_PATHS += $(patsubst ./plugins/example-plugin/generated/%.txt, ./%-in-lower-case.txt, $(filter ./%.txt, $(DRECK_SRC_PATHS)))
 ```
-
-### `./submodules/plugins/*/src/**`
-
-Everything in this directory is considered to be a source file contributed by a plugin.  Each file will be copied to `./ephemeral/src` (e.g. `./submodules/plugins/example-plugin/src/a/b.c` will be copied to `./ephemeral/src/a/b.c`) and will be listed in `DRECK_SRC_PATHS` relative to `./submodules/plugins/*/src`, space separated (e.g. `./submodules/plugins/example-plugin/src/a/b.c` would be included in `DRECK_SRC_PATHS` as `./a/b.c`).
 
 ## Test suite
 
@@ -137,29 +131,3 @@ It has additionally been configured as the default build task for Visual Studio 
 - `Terminal` > `Run Build Task...`.
 - Ctrl + Shift + B (Windows/Linux).
 - Cmd + Shift + B (macOS).
-
-### `./submodules/plugins/*/variables.makefile`
-
-Use this makefile to add/amend variables.
-
-The following variables are defined:
-
-#### `DRECK_SRC_PATHS`
-
-A read-only space-separated list of all of the source files found, relative to `./ephemeral/src` (e.g. `./ephemeral/src/a/b.c` will appear as `./a/b.c`).
-
-#### `DRECK_INTERMEDIATE_PATHS`
-
-A readable and appendable space-separated list of all of the intermediate files which will exist by the end of the build, relative to `./ephemeral/intermediate` (e.g. `./ephemeral/intermediate/a/b.c` will appear as `./a/b.c`).
-
-#### `DRECK_DIST_PATHS`
-
-An appendable space-separated list of all of the build artifact files which will exist by the end of the build, relative to `./ephemeral/dist` (e.g. `./ephemeral/dist/a/b.c` will appear as `./a/b.c`).
-
-#### Example
-
-This defines the variables which would make a copy of each text file in the source files as an intermediate file, transformed into lower case:
-
-```makefile
-DRECK_INTERMEDIATE_PATHS += $(patsubst ./%.txt, ./%-in-lower-case.txt, $(filter ./%.txt, $(DRECK_SRC_PATHS)))
-```

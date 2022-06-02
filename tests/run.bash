@@ -5,15 +5,15 @@
   temporaryDirectory=$(mktemp -d)
   expected=$temporaryDirectory/expected
   cp -r ./tests/project-setup/expected/. $expected
-  mkdir -p $expected/submodules/dreck
-  cp -r . $expected/submodules/dreck
+  mkdir -p $expected/plugins/dreck
+  cp -r . $expected/plugins/dreck
   actual=$temporaryDirectory/actual
   cp -r ./tests/project-setup/input/. $actual
-  mkdir -p $actual/submodules/dreck
-  cp -r . $actual/submodules/dreck
+  mkdir -p $actual/plugins/dreck
+  cp -r . $actual/plugins/dreck
   cd $actual
 
-  make --file ./submodules/dreck/makefile
+  make --file ./plugins/dreck/makefile
 
   cd $repository
   diff --brief --recursive $actual $expected
@@ -25,15 +25,15 @@
   temporaryDirectory=$(mktemp -d)
   expected=$temporaryDirectory/expected
   cp -r ./tests/first-run/expected/. $expected
-  mkdir -p $expected/submodules/dreck
-  cp -r . $expected/submodules/dreck
+  mkdir -p $expected/plugins/dreck
+  cp -r . $expected/plugins/dreck
   actual=$temporaryDirectory/actual
   cp -r ./tests/first-run/input/. $actual
-  mkdir -p $actual/submodules/dreck
-  cp -r . $actual/submodules/dreck
+  mkdir -p $actual/plugins/dreck
+  cp -r . $actual/plugins/dreck
   cd $actual
 
-  make --file ./submodules/dreck/makefile
+  make --file ./plugins/dreck/makefile
 
   cd $repository
   diff --brief --recursive $actual $expected
@@ -45,18 +45,17 @@
   temporaryDirectory=$(mktemp -d)
   expected=$temporaryDirectory/expected
   cp -r ./tests/subsequent-run/expected/. $expected
-  mkdir -p $expected/submodules/dreck
-  cp -r . $expected/submodules/dreck
+  mkdir -p $expected/plugins/dreck
+  cp -r . $expected/plugins/dreck
   actual=$temporaryDirectory/actual
   cp -r ./tests/subsequent-run/input/. $actual
-  mkdir -p $actual/submodules/dreck
-  cp -r . $actual/submodules/dreck
+  mkdir -p $actual/plugins/dreck
+  cp -r . $actual/plugins/dreck
   sleep 2
-  find $actual/src -type f -name "changed-*.txt" -exec touch {} +
-  find $actual/submodules/plugins/*/src -type f -name "changed-*.txt" -exec touch {} +
+  find $actual/plugins/*/src -type f -name "changed-*.txt" -exec touch {} +
   cd $actual
 
-  make --file ./submodules/dreck/makefile
+  make --file ./plugins/dreck/makefile
 
   cd $repository
   diff --brief --recursive $actual $expected
@@ -68,18 +67,17 @@
   temporaryDirectory=$(mktemp -d)
   expected=$temporaryDirectory/expected
   cp -r ./tests/only-changes/expected/. $expected
-  mkdir -p $expected/submodules/dreck
-  cp -r . $expected/submodules/dreck
+  mkdir -p $expected/plugins/dreck
+  cp -r . $expected/plugins/dreck
   actual=$temporaryDirectory/actual
   cp -r ./tests/only-changes/input/. $actual
-  mkdir -p $actual/submodules/dreck
-  cp -r . $actual/submodules/dreck
+  mkdir -p $actual/plugins/dreck
+  cp -r . $actual/plugins/dreck
   sleep 2
-  find $actual/src -type f -name "changed-*.txt" -exec touch {} +
-  find $actual/submodules/plugins/*/src -type f -name "changed-*.txt" -exec touch {} +
+  find $actual/plugins/*/src -type f -name "changed-*.txt" -exec touch {} +
   cd $actual
 
-  make --file ./submodules/dreck/makefile
+  make --file ./plugins/dreck/makefile
 
   cd $repository
   diff --brief --recursive $actual $expected
@@ -91,15 +89,15 @@
   temporaryDirectory=$(mktemp -d)
   expected=$temporaryDirectory/expected
   cp -r ./tests/only-deletions/expected/. $expected
-  mkdir -p $expected/submodules/dreck
-  cp -r . $expected/submodules/dreck
+  mkdir -p $expected/plugins/dreck
+  cp -r . $expected/plugins/dreck
   actual=$temporaryDirectory/actual
   cp -r ./tests/only-deletions/input/. $actual
-  mkdir -p $actual/submodules/dreck
-  cp -r . $actual/submodules/dreck
+  mkdir -p $actual/plugins/dreck
+  cp -r . $actual/plugins/dreck
   cd $actual
 
-  make --file ./submodules/dreck/makefile
+  make --file ./plugins/dreck/makefile
 
   cd $repository
   diff --brief --recursive $actual $expected
@@ -111,15 +109,15 @@
   temporaryDirectory=$(mktemp -d)
   expected=$temporaryDirectory/expected
   cp -r ./tests/no-changes/expected/. $expected
-  mkdir -p $expected/submodules/dreck
-  cp -r . $expected/submodules/dreck
+  mkdir -p $expected/plugins/dreck
+  cp -r . $expected/plugins/dreck
   actual=$temporaryDirectory/actual
   cp -r ./tests/no-changes/input/. $actual
-  mkdir -p $actual/submodules/dreck
-  cp -r . $actual/submodules/dreck
+  mkdir -p $actual/plugins/dreck
+  cp -r . $actual/plugins/dreck
   cd $actual
 
-  make --file ./submodules/dreck/makefile
+  make --file ./plugins/dreck/makefile
 
   cd $repository
   diff --brief --recursive $actual $expected
@@ -131,15 +129,15 @@
   temporaryDirectory=$(mktemp -d)
   expected=$temporaryDirectory/expected
   cp -r ./tests/only-additions/expected/. $expected
-  mkdir -p $expected/submodules/dreck
-  cp -r . $expected/submodules/dreck
+  mkdir -p $expected/plugins/dreck
+  cp -r . $expected/plugins/dreck
   actual=$temporaryDirectory/actual
   cp -r ./tests/only-additions/input/. $actual
-  mkdir -p $actual/submodules/dreck
-  cp -r . $actual/submodules/dreck
+  mkdir -p $actual/plugins/dreck
+  cp -r . $actual/plugins/dreck
   cd $actual
 
-  make --file ./submodules/dreck/makefile
+  make --file ./plugins/dreck/makefile
 
   cd $repository
   diff --brief --recursive $actual $expected
