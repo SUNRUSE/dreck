@@ -1,1 +1,1 @@
-DRECK_GENERATED_PATHS += $(patsubst ./%.txt, ./plugins/with-rules/generated/%-in-lower-case.txt, $(filter %.txt, $(DRECK_SRC_PATHS)))
+DRECK_WITH_RULES_PATHS += $(filter %.txt, $(DRECK_SRC_PATHS))
