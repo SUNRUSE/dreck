@@ -20,7 +20,7 @@ Realistically, any common Linux distribution should include these, or have them 
 After creating a new Git repository for your project, install Dreck as a submodule by running the following in a Bash shell at the root:
 
 ```bash
-git submodule add https://github.com/sunruse/dreck submodules/dreck
+git submodule add https://github.com/sunruse/dreck plugins/dreck
 ```
 
 ## Running a build
@@ -30,7 +30,7 @@ It is recommended to install a plugin to run the build.
 If none of these apply to your use case, run the following in a Bash shell from the root of your project:
 
 ```bash
-make --file ./submodules/dreck/makefile
+make --file ./plugins/dreck/makefile
 ```
 
 The first build will generate some ["bundled" files](./bundled) such as Git configuration which almost all projects should include.  Subsequent builds will not modify these.
