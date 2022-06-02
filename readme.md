@@ -90,7 +90,7 @@ Given appropriate variable manipulation (see `./plugins/*/variables.makefile`), 
 
 ### `./plugins/*/src/**`
 
-Everything in these directories is considered to be a source file.  Each file will be listed in `DRECK_SRC_PATHS`, relative to the root of the project, space separated (e.g. `./submodules/plugins/example-plugin/src/a/b.c` would be included in `DRECK_SRC_PATHS` as `./a/b.c`).
+Everything in these directories is considered to be a source file.  Each file will be listed in `DRECK_SRC_PATHS`, relative to the root of the project, space separated (e.g. `./plugins/example-plugin/src/a/b.c` would be included in `DRECK_SRC_PATHS` as `./a/b.c`).
 
 ### `./plugins/*/variables.makefile`
 
